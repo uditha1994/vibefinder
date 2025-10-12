@@ -1,8 +1,12 @@
+import Header from "./components/common/Header"
+import LoadingSpinner from "./components/common/LoadingSpinner"
+
 function App() {
 
   return (
     <>
-      <h1>Uditha Ladekumbura</h1>
+      <LoadingSpinner />
+      <Header />
     </>
   )
 }
