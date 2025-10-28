@@ -1,8 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { FIREBASE_CONFIG } from '../utils/constants.js';
 import {
-    getFirestore, collection, doc, addDoc, updateDoc, deleteDoc, getDocs, getDoc,
-    query, where, orderBy, limit, increment, serverTimestamp
+    getFirestore, collection, doc, setDoc, addDoc, updateDoc, deleteDoc, getDocs, getDoc,
+    query, where, orderBy, limit, increment, serverTimestamp, arrayUnion
 } from "firebase/firestore";
 
 //Initialize Firebase
@@ -251,6 +251,36 @@ class FirebaseService {
             return {};
         }
     }
+
+}
+
+//save user vote for a video
+export const saveUserVote = async (userId, videoId, mood, voteType) => {
+    try {
+        const voteId = `${userId}_${videoId}_${mood}`;
+        const voteRef = doc(db, 'votes', voteId);
+
+        await setDoc(voteRef, {
+            userId,
+            videoId,
+            mood,
+            voteType,
+            timestamp: serverTimestamp()
+        }, { merge: true });
+
+        //update video statistics
+        const videoStatsRef = doc(db, 'videoStats', `${videoId}_${mood}`);
+        const videoStatsDoc = await getDoc(videoStatsRef);
+
+        if (videoStatsDoc.exists()) {
+
+        }
+    } catch (error) {
+
+    }
+}
+
+export const getUserVotes = async (userId) => {
 
 }
 
