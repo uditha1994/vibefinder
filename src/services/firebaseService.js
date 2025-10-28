@@ -273,15 +273,69 @@ export const saveUserVote = async (userId, videoId, mood, voteType) => {
         const videoStatsDoc = await getDoc(videoStatsRef);
 
         if (videoStatsDoc.exists()) {
+            const currentData = videoStatsDoc.data();
+            const updates = {};
 
+            //remove previous vote if exists
+            if (currentData.voters && currentData.voters[userId]) {
+                const previousVote = currentData.voters[userId];
+                if (previousVote === 'up') {
+                    updates.upvotes = increment(-1);
+                } else {
+                    updates.downvotes = increment(-1);
+                }
+            }
+
+            //add new vote
+            if (voteType === 'up') {
+                updates.upvotes = increment(1);
+            } else {
+                updates.downvotes = increment(1);
+            }
+            updates[`voters.${userId}`] = voteType;
+            updates.lastUpdated = serverTimestamp();
+            await updateDoc(videoStatsRef, updates);
+
+        } else {
+            // create new video states documnet
+            await setDoc(videoStatsRef, {
+                videoId,
+                mood,
+                upvotes: voteType === 'up' ? 1 : 0,
+                downvotes: voteType === 'down' ? 1 : 0,
+                voters: {
+                    [userId]: voteType
+                },
+                createdAt: serverTimestamp(),
+                lastUpdated: serverTimestamp()
+            });
         }
     } catch (error) {
-
+        console.error('error saving vote: ', error);
+        throw error;
     }
 }
 
 export const getUserVotes = async (userId) => {
+    try {
+        const votesQuery = query(
+            collection(db, 'votes'),
+            where('userId', '==', userId)
+        );
 
+        const querySnapshot = await getDocs(votesQuery);
+        const votes = {};
+
+        querySnapshot.forEach((doc) => {
+            const data = doc.data();
+            votes[`${data.videoId}_${data.mood}`] = data.voteType;
+        });
+        return votes;
+        
+    } catch (error) {
+        console.error('Error getting user votes:', error);
+        return {};
+    }
 }
 
 //Export singleton instance
