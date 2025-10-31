@@ -3,8 +3,9 @@ import { useAuth } from '../context/AuthContext';
 import { use, useEffect, useState } from 'react';
 import { getUserVotes, saveUserVote } from '../services/firebaseService';
 import { searchVideosByMood } from '../services/youtubeService';
-import { MoodSelector } from '../components/mood/MoodSelector';
-import { FilterBar } from '../components/FilterBar/FilterBar'
+import MoodSelector from '../components/mood/MoodSelector';
+import FilterBar from '../components/FilterBar/FilterBar';
+import VideoGrid from '../components/video/VideoGrid';
 import '../styles/Discover.css';
 
 
@@ -145,7 +146,12 @@ const Discover = () => {
                 )}
 
                 {!loading && !error && videos.length > 0 && (
-                    
+                    <VideoGrid
+                        videos={videos}
+                        onVote={handleVote}
+                        userVote={userVotes}
+                        selectMood={selectedMood}
+                    />
                 )}
 
                 {!loading && !error && selectedMood && videos.length === 0 && (
