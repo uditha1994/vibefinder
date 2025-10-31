@@ -2,7 +2,11 @@ import { useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { use, useEffect, useState } from 'react';
 import { getUserVotes, saveUserVote } from '../services/firebaseService';
-import { searchVideosByMood } from '../services/youtubeService'
+import { searchVideosByMood } from '../services/youtubeService';
+import { MoodSelector } from '../components/mood/MoodSelector';
+import { FilterBar } from '../components/FilterBar/FilterBar'
+import '../styles/Discover.css';
+
 
 const Discover = () => {
     const { user } = useAuth();
@@ -95,6 +99,61 @@ const Discover = () => {
 
     return (
         <div className="discover">
+            <div className="discover-header">
+                <h1>Discover Your Vibe</h1>
+                <p>Select your mood to find videos that match your vibe</p>
+            </div>
+
+            {/* Mood selection */}
+            <section className="mood-selection">
+                <MoodSelector
+                    onMoodSelect={handleMoodSelect}
+                    selectedMood={selectedMood}
+                />
+
+                {selectedMood && (
+                    <div className="select-mood-info">
+                        <span>Finding videos for: <strong>{selectedMood}</strong></span>
+                        <button onClick={clearSection} className="clear-btn">Clear Selection</button>
+                    </div>
+                )}
+            </section>
+
+            {/* Filters */}
+            {selectedMood && (
+                <FilterBar
+                    filters={filters}
+                    onFilterChange={handleFilterChange}
+                />
+            )}
+
+            {/* Results */}
+            <section className="results-section">
+                {loading && (
+                    <div className="loading-state">
+                        <div className="loading-spinner"></div>
+                        <p>Finding the perfect vibes for you...</p>
+                    </div>
+                )}
+
+                {error && (
+                    <div className="error-state">
+                        <p>{error}</p>
+                        <button onClick={() => handleMoodSelect({ id: selectedMood })}>
+                            Try Again</button>
+                    </div>
+                )}
+
+                {!loading && !error && videos.length > 0 && (
+                    
+                )}
+
+                {!loading && !error && selectedMood && videos.length === 0 && (
+                    <div className="no-results">
+                        <p>No video found for this mood, Try different selection</p>
+                    </div>
+                )}
+            </section>
 
         </div>
     )
