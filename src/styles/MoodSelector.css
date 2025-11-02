@@ -1,10 +1,10 @@
-.mood-selector{
+.mood-selector {
     width: 100%;
     max-width: 1000px;
     margin: 0 auto;
 }
 
-.mood-grid{
+.moods-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1.5rem;
@@ -14,11 +14,108 @@
 .mood-card {
     background: var(--surface-color);
     border: 2px solid var(--border-color);
-    padding: 2rem 1rem;
     border-radius: 16px;
+    padding: 2rem 1rem;
     text-align: center;
     cursor: pointer;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
+}
+
+.mood-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--mood-color-alpha);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: 1;
+}
+
+.mood-card:hover::before,
+.mood-card.selected::before {
+    opacity: 1;
+}
+
+.mood-card:hover,
+.mood-card.selected {
+    border-color: var(--mood-color);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px var(--mood-color-alpha);
+}
+
+.mood-emoji {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 2;
+    transition: transform 0.3s ease;
+}
+
+.mood-card:hover .mood-emoji {
+    transform: scale(1.2);
+}
+
+.mood-name {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    position: relative;
+    z-index: 2;
+}
+
+.mood-description {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    position: relative;
+    z-index: 2;
+    animation: fadeInUp 0.3s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .moods-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .mood-card {
+        padding: 1.5rem 0.5rem;
+    }
+
+    .mood-emoji {
+        font-size: 2.5rem;
+    }
+
+    .mood-name {
+        font-size: 1rem;
+    }
+
+    .mood-description {
+        font-size: 0.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .moods-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }

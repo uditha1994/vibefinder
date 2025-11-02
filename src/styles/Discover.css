@@ -1,0 +1,147 @@
+.discover {
+    min-height: 100vh;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+}
+
+.discover-header {
+    text-align: center;
+    margin-bottom: 3rem;
+}
+
+.discover-header h1 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    background: var(--primary-gradient);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.discover-header p {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+}
+
+.mood-selection {
+    margin-bottom: 2rem;
+}
+
+.selected-mood-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    background: var(--surface-color);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+}
+
+.selected-mood-info span {
+    color: var(--text-primary);
+    font-weight: 500;
+}
+
+.clear-btn {
+    background: var(--danger-color);
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.clear-btn:hover {
+    background: var(--danger-color-dark);
+    transform: translateY(-2px);
+}
+
+.results-section {
+    margin-top: 2rem;
+}
+
+.loading-state,
+.error-state,
+.no-results,
+.welcome-state {
+    text-align: center;
+    padding: 4rem 2rem;
+}
+
+.loading-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.loading-spinner {
+    width: 50px;
+    height: 50px;
+    border: 4px solid var(--border-color);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.error-state {
+    color: var(--danger-color);
+}
+
+.error-state button {
+    background: var(--primary-gradient);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 500;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.error-state button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--primary-color-alpha);
+}
+
+.welcome-state h2 {
+    color: var(--text-primary);
+    margin-bottom: 1rem;
+}
+
+.welcome-state p {
+    color: var(--text-secondary);
+    font-size: 1.1rem;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 768px) {
+    .discover {
+        padding: 1rem;
+    }
+
+    .discover-header h1 {
+        font-size: 2rem;
+    }
+
+    .selected-mood-info {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
