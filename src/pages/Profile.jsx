@@ -137,6 +137,71 @@ const Profile = () => {
                         </div>
                     </div>
                 </div>
+
+                <div className="mood-preferences">
+                    <h2>Mood Preferences</h2>
+                    <p>Rate now, how much you enjoy each mood category (1-5 Statrs)</p>
+
+                    <div className="preferences-grid">
+                        {moodCategories.map((mood) => (
+                            <div key={mood.id} className="preference-item">
+                                <div className="mood-info">
+                                    <span className="mood-emoji">{mood.emoji}</span>
+                                    <span className='mood-name'>{mood.name}</span>
+                                </div>
+                                <div className="rating-starts">
+                                    {[1, 2, 3, 4, 5].map((star) => (
+                                        <button
+                                            key={star}
+                                            className={`star ${(moodPreferences[mood.id] || 0) >=
+                                                star ? 'active' : ''}`}
+                                            onClick={() => handlePreferenceChange(mood.id, star)}
+                                        >
+                                            ⭐️
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+
+                    <button
+                        className='save-preferences-btn'
+                        onClick={savePreferences}
+                        disabled={saving}
+                    >
+                        {saving ? 'Saving...' : 'Save Preferences'}
+                    </button>
+                </div>
+
+                {/* resent activity */}
+                <div className="recent-activity">
+                    <h2>Recent Activity</h2>
+                    {Object.keys(userVotes).length > 0 ? (
+                        <div className="activity-list">
+                            {Object.entries(userVotes).slice(-10).reverse()
+                                .map(([key, vote]) => {
+                                    const [videoId, mood] = key.split('_');
+                                    return (
+                                        <div className="activity-item">
+                                            <div className="activity-icon">
+                                                {vote === 'up' ? '👍' : '👎'}
+                                            </div>
+                                            <div className="activity-text">
+                                                Toy voted <strong>{vote === 'up' ? 'Good Vibe' :
+                                                    'Wrong Vibe'}</strong> for a <strong>{mood}</strong>
+                                                video
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                        </div>
+                    ) : (
+                        <div className="no-activity">
+                            <p>No activity yet, Start discovering videos to see your activity here</p>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     )

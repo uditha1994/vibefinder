@@ -47,12 +47,6 @@ const Header = () => {
                     >Home
                     </Link>
                     <Link
-                        to="/favorite"
-                        className={`navbar-link ${location.pathname ===
-                            '/favorite' ? 'active' : ''}`}
-                    >Favorites
-                    </Link>
-                    <Link
                         to="/discover"
                         className={`navbar-link ${location.pathname ===
                             '/discover' ? 'active' : ''}`}
